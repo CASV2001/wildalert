@@ -1,6 +1,6 @@
-plugins {
+plugins {   
     id("com.android.application")
-    id("kotlin-android")
+    id("org.jetbrains.kotlin.android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
 }
@@ -8,7 +8,7 @@ plugins {
 android {
     namespace = "com.example.wildalert"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    ndkVersion = "27.0.12077973"
 
        compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -41,8 +41,7 @@ android {
 }
 
 dependencies {
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:1.1.5")
-    
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
     // Otras dependencias existentes...
 }
 
