@@ -6,7 +6,7 @@
     <application        android:label="WildAlert"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNA6b8q-plgXaxfJycjbr3S-HBawe9zd8"/>
@@ -26,7 +26,9 @@
             <meta-data
               android:name="io.flutter.embedding.android.NormalTheme"
               android:resource="@style/NormalTheme"
-              />
+              android:name="com.google.android.geo.API_KEY"
+              android:value="AIzaSyCNA6b8q-plgXaxfJycjbr3S-HBawe9zd8" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -1,9 +1,11 @@
+/*
 import 'package:flutter/material.dart';
 import 'screens/home_screen.dart';
 import 'screens/scan_screen.dart';
 import 'screens/map_screen.dart';
 import 'screens/report_sighting_screen.dart';
 import 'screens/first_aid_screen.dart';
+import 'map_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,6 +33,26 @@ class MyApp extends StatelessWidget {
         '/report': (context) => const ReportSightingScreen(),
         '/first-aid': (context) => const FirstAidScreen(),
       },
+    );
+  }
+}
+*/
+import 'package:flutter/material.dart';
+import 'map_screen.dart'; // Importa nuestra pantalla del mapa
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Demo Google Maps',
+      home: const MapScreen(), // Usamos la pantalla del mapa
+      debugShowCheckedModeBanner: false,
     );
   }
 }
