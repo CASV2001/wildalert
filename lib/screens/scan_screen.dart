@@ -1,6 +1,9 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
+
 import 'package:camera/camera.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:wildalert/services/animal_recognition_service.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -26,9 +29,7 @@ class _ScanScreenState extends State<ScanScreen> {
     _controller = CameraController(cameras[0], ResolutionPreset.high);
     await _controller?.initialize();
     if (mounted) {
-      setState(() {
-        _isCameraInitialized = true;
-      });
+      setState(() => _isCameraInitialized = true);
     }
   }
 
@@ -38,8 +39,10 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       final XFile? picture = await _controller?.takePicture();
       if (picture != null) {
-        // TODO: Implement ML model processing
-        // Navigate to results screen
+        final file = File(picture.path);
+        final result = await AnimalRecognitionService().recognizeAnimal(file);
+        debugPrint('Resultado del modelo (foto cámara): $result');
+        _showResultDialog(result);
       }
     } catch (e) {
       debugPrint('Error taking picture: $e');
@@ -51,9 +54,32 @@ class _ScanScreenState extends State<ScanScreen> {
     final XFile? image = await picker.pickImage(source: ImageSource.gallery);
 
     if (image != null) {
-      // TODO: Implement ML model processing
-      // Navigate to results screen
+      final file = File(image.path);
+      final result = await AnimalRecognitionService().recognizeAnimal(file);
+      debugPrint('Resultado del modelo (galería): $result');
+      _showResultDialog(result);
     }
+  }
+
+  /// Muestra un diálogo con las predicciones formateadas.
+  void _showResultDialog(Map<String, double> result) {
+    final formatted = result.entries
+        .map((e) => '${e.key}: ${(e.value * 100).toStringAsFixed(2)}%')
+        .join('\n');
+
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Predicción'),
+        content: Text(formatted),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('OK'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
