@@ -22,11 +22,12 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initializeMap();
   }
+
   Future<void> _initializeMap() async {
     try {
       await _checkAndRequestPermissions();
       await _getCurrentLocation();
-      
+
       // Asegurarse de que tenemos una posición válida
       if (_currentPosition == null) {
         throw Exception('No se pudo obtener la ubicación actual');
@@ -39,7 +40,10 @@ class _MapScreenState extends State<MapScreen> {
           _markers.add(
             Marker(
               markerId: const MarkerId('current_location'),
-              position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+              position: LatLng(
+                _currentPosition!.latitude,
+                _currentPosition!.longitude,
+              ),
               infoWindow: const InfoWindow(title: 'Mi ubicación'),
             ),
           );
@@ -49,7 +53,10 @@ class _MapScreenState extends State<MapScreen> {
         _mapController?.animateCamera(
           CameraUpdate.newCameraPosition(
             CameraPosition(
-              target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+              target: LatLng(
+                _currentPosition!.latitude,
+                _currentPosition!.longitude,
+              ),
               zoom: 15,
             ),
           ),
