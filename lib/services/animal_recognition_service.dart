@@ -12,8 +12,24 @@ class AnimalRecognitionService {
 
   AnimalRecognitionService._internal();
 
-  /// Puerto donde corre mi servidor
-  static const String _baseUrl = 'http://10.0.2.2:5050/predict';
+  /// URLs para el servidor según el entorno
+  static const String _emulatorUrl = 'http://10.0.2.2:5050/predict';
+  static const String _deviceUrl = 'http://10.0.1.34:5050/predict';
+
+  /// Selecciona la URL correcta según si estamos en emulador o dispositivo físico
+  static String get _baseUrl {
+    // Platform.isAndroid ya está importado desde dart:io
+    if (Platform.isAndroid) {
+      try {
+        // Esta es una forma de detectar si estamos en el emulador
+        File('/proc/sys/fs/binfmt_misc/WSLInterop').statSync();
+        return _emulatorUrl;
+      } catch (_) {
+        return _deviceUrl;
+      }
+    }
+    return _deviceUrl;
+  }
 
   /// Envía [imageFile] al endpoint `/predict` y recibe las predicciones.
   /// Devuelve un `Map<label, confidence>`.

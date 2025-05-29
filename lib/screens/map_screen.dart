@@ -22,15 +22,38 @@ class _MapScreenState extends State<MapScreen> {
     super.initState();
     _initializeMap();
   }
-
   Future<void> _initializeMap() async {
     try {
       await _checkAndRequestPermissions();
       await _getCurrentLocation();
+      
+      // Asegurarse de que tenemos una posición válida
+      if (_currentPosition == null) {
+        throw Exception('No se pudo obtener la ubicación actual');
+      }
+
       if (mounted) {
         setState(() {
           _isLoading = false;
+          // Agregar un marcador en la ubicación actual
+          _markers.add(
+            Marker(
+              markerId: const MarkerId('current_location'),
+              position: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+              infoWindow: const InfoWindow(title: 'Mi ubicación'),
+            ),
+          );
         });
+
+        // Centrar el mapa en la ubicación actual cuando se obtiene por primera vez
+        _mapController?.animateCamera(
+          CameraUpdate.newCameraPosition(
+            CameraPosition(
+              target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+              zoom: 15,
+            ),
+          ),
+        );
       }
     } catch (e) {
       if (mounted) {
